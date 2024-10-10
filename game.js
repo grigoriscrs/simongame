@@ -4,9 +4,7 @@ var userSequence = [];
 var level = 0;
 var choice = 0;
 $(".btn").click(handleClick);
-
-//initiate
-nextSequence();
+$(document).keydown(handleGame);
 
 function nextSequence(){
   var rand = Math.floor(Math.random()*4);
@@ -62,19 +60,38 @@ function handleAnimation(input){
 }
 
 function handleClick() {
-  while(choice <= gameSequence.length){
-    var btnPressed = $(this).attr("id");
-    userSequence.push(btnPressed);
 
-    if(userSequence[choice] == gameSequence[level]){
-      handleSound(btnPressed);
-      level++;
-      choice++;
-    }else {
-      handleSound("wrong");
-      resetGame();
-    }
+  var btnPressed = $(this).attr("id");
+  userSequence.push(btnPressed); 
+
+  if(userSequence[choice] == gameSequence[choice]){
+    handleSound(btnPressed);
+    choice++;
+    
+  }else {
+    handleSound("wrong");
+    resetGame();
   }
+
+  if(userSequence.length == gameSequence.length){
+    setTimeout(nextSequence, 1500);
+    userSequence = [];
+    choice = 0;
+    $("h1").text("Level " + (level +1));
+    level++;
+  }
+
+}
+
+function handleGame(event) {
+  if(event.key = "Space"){
+    setTimeout(nextSequence, 1500);
+    level = 0;
+    $("h1").text("Level " + (level +1));
+  }else
+    console.log("wrong input");
+  resetGame();
+  
 }
 
 function resetGame(){
@@ -82,5 +99,4 @@ function resetGame(){
   userSequence = [];
   choice = 0;
   level = 0;
-  setTimeout(nextSequence, 1000);
 }
